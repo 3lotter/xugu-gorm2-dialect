@@ -122,7 +122,7 @@ func (m Migrator) ColumnTypes(value interface{}) ([]gorm.ColumnType, error) {
         err := m.RunWithValue(value, func(stmt *gorm.Statement) error {
                 var (
                         currentDatabase, table = m.CurrentSchema(stmt, stmt.Table)
-                        columnTypeSQL          = "select a.col_name,a.def_val,b.cons_type,a.is_serial,a.comments from all_columns a left join all_constraints b on a.db_id = b.db_id and a.table_id = b.table_id  and b.define like '%'|a.col_name|'%'"
+                        columnTypeSQL          = "select a.col_name,a.def_val,b.cons_type,a.is_serial,a.comments from all_columns a left join all_constraints b on a.db_id = b.db_id and a.table_id = b.table_id  and b.define like '%'||a.col_name||'%'"
                         rows, err              = m.DB.Session(&gorm.Session{}).Table(table).Limit(1).Rows()
                 )
 
